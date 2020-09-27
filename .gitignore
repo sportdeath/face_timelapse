@@ -1,2 +1,5 @@
 src*
 dst*
+*.png
+*.jpg
+*.gif
