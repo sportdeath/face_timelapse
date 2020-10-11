@@ -4,8 +4,9 @@ import os
 import numpy as np
 from PIL import Image
 
-MIX_TIME = 5 # days
+MIX_TIME = 3 # days
 FRAME_TIME = 2. # days
+OFFSET_TIME = 90. # days
 EPSILON = 0.0001
 INPUT_DIR = "dst"
 OUTPUT_DIR = "mixed"
@@ -34,13 +35,14 @@ for i, t in enumerate(times):
     weights[i] = 1./np.sum(gaussian_pdf(times, t, MIX_TIME))
 
 # Sample time at a constant rate
-frames = np.arange(times[0], times[-1], FRAME_TIME)
+frames = np.arange(times[0] - OFFSET_TIME, times[-1] + OFFSET_TIME, FRAME_TIME)
 
 for i, t in enumerate(frames):
     # Calculate the relative weight of every picture in the frame
     probs = weights * gaussian_pdf(times, t, MIX_TIME)
     # Get rid of ones with negligible effect
     # so this doesn't take forever
+    probs = probs/np.sum(probs)
     probs[probs < EPSILON] = 0
     probs = probs/np.sum(probs)
 

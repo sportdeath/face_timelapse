@@ -11,7 +11,7 @@ import face_alignment
 
 INPUT_DIR  = "src"
 OUTPUT_DIR = "dst"
-MASTER = "src/50361794497_96f263eed2_o.jpg"
+MASTER = "master.jpg"
 
 fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, device='cpu')
 
@@ -34,7 +34,7 @@ def master_align(img, face):
 
     return np.matmul(np.linalg.inv(np.matmul(A.T, A)), A.T)
 
-def align(img, face, master_trans):
+def align(img, face, master_trans, master_shape):
     # A least squares transformation that does
     # translation, rotation and uniform scaling
     # (if it were affine, the face can stretch in weird ways)
@@ -45,7 +45,7 @@ def align(img, face, master_trans):
 
     img = cv2.warpAffine(
             img, affine_trans,
-            (img.shape[1], img.shape[0]),
+            (master_shape[1], master_shape[0]),
             flags=cv2.WARP_INVERSE_MAP)
 
     return img
@@ -116,14 +116,17 @@ if __name__ == "__main__":
             img = lab_to_rgb(img)
 
             # Align the image
-            img = align(img, face, master_trans)
+            img = align(img, face, master_trans, master.shape)
 
             # Save the image
             if img is not None:
                 # Extract the time
-                t = img_dat.getexif().get(306)
-                t = datetime.datetime.strptime(t, "%Y:%m:%d %H:%M:%S")
-                t = int(time.mktime(t.timetuple()))
+                try:
+                    t = img_dat.getexif().get(306)
+                    t = datetime.datetime.strptime(t, "%Y:%m:%d %H:%M:%S")
+                    t = int(time.mktime(t.timetuple()))
+                except:
+                    t = 0
 
                 img_dat = Image.fromarray(img)
                 fn = os.path.join(OUTPUT_DIR, str(t) + ".jpg")
