@@ -5,7 +5,7 @@ This works even if the photos have be shot at multiple locations on an inconsist
 For example:
 
 <p align="center">
-  ![Face Timelapse Example](https://live.staticflickr.com/65535/51116215453_e891aa699c_o_d.gif)
+  <img src="https://live.staticflickr.com/65535/51116215453_e891aa699c_o_d.gif" alt="face timelapse example"/>
 </p>
 
 The first script automatically aligns the faces and performs basic color normalization in [LAB color space](https://en.wikipedia.org/wiki/CIELAB_color_space).
