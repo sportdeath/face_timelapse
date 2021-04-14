@@ -4,7 +4,9 @@ This is a series of scripts designed to turn photos of a face that have been cas
 This works even if the photos have be shot at multiple locations on an inconsistent schedule with a smart phone.
 For example:
 
-*INSERT GIF HERE*
+<p align="center">
+  ![Face Timelapse Example](https://live.staticflickr.com/65535/51116215453_e891aa699c_o_d.gif)
+</p>
 
 The first script automatically aligns the faces and performs basic color normalization in [LAB color space](https://en.wikipedia.org/wiki/CIELAB_color_space).
 The second script mixes the images temporally to reduce flicker and account for inconsistent time intervals between photos.
@@ -21,7 +23,7 @@ The final script combines the mixed images into a ```.mp4``` file.
 
 ## Usage
 
-Put all of the images you want to make into a timelapse into a single folder.
+Put all of the images you want in your timelapse into a single folder.
 The order doesn't matter but they must have timestamps embedded in their EXIF data.
 By default this script will only search for ```.jpg``` files, but that can be changed in the [```align.py```](https://github.com/sportdeath/face_timelapse/blob/master/align.py) script.
 
@@ -41,7 +43,7 @@ This will probably take a while.
 
 Create a directory for the mixed images.
 Optionally, modify the constants in the [```mix.py```](https://github.com/sportdeath/face_timelapse/blob/master/mix.py) script.
-All of these are measured in days:
+All of these constants are measured in days:
 
 - ```FRAME_TIME```: The length of time represented by a single frame.
 - ```MIX_TIME```: The standard deviation of the temporal blurring window.
@@ -82,11 +84,11 @@ this advice would be irrelivant.
 ### Pose and Expression
 
 The align script performs 2D corrections for faces that are off-center, tilted or scaled,
-but it can't do 3D corrections, like turning your head to face the camera.
+but it can't do 3D corrections like turning your head to face the camera.
 So keep the pose of your head consistent.
 
 This includes being concious of the rotation of your chin --- you don't want your chin and forehead to grow and shrink over time.
-The easiest way to maintain a consisten chin-rotation is to look forward and keep the camera at eye level (unlike your typical selfie pose where the camera is held above the head).
+The easiest way to maintain a consistent chin-rotation is to look forward and keep the camera at eye level (unlike your typical selfie where the camera is held above the head).
 
 Also keep the camera at a consistent distance away (*e.g.* arms length) to avoid inconsistent [extension distortion](https://en.wikipedia.org/wiki/Selfie#Facial_distortion_effect).
 
