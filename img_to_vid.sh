@@ -1,4 +1,10 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-filters="fps=60"
-ffmpeg -v warning -pattern_type glob -i "$1/*.jpg" -vf "$filters" -c:v libx265 -pix_fmt yuv420p -b:v 10000k -y $2
+FRAMES_PER_SECOND=60
+
+# The smaller the CRF, the higher the quality
+# but bigger the video. For more info see:
+# https://trac.ffmpeg.org/wiki/Encode/H.264#crf
+CONSTANT_RATE_FACTOR=12
+
+ffmpeg -v warning -r $FRAMES_PER_SECOND -i "$1/%08d.jpg" -c:v libx265 -crf $CONSTANT_RATE_FACTOR -preset fast -pix_fmt yuv420p -y $2

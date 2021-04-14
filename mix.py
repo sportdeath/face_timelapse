@@ -5,12 +5,10 @@ import numpy as np
 from PIL import Image
 import sys
 
-"""
-Mixing parameters
-"""
-FRAME_TIME  =  1. # days
-MIX_TIME    =  3. # days
-OFFSET_TIME = 90. # days
+# Mixing parameters
+FRAME_TIME  =   0.25  # days
+MIX_TIME    =   3.   # days
+OFFSET_TIME =  50.   # days
 
 def gaussian_pdf(x, mean, std_dev):
     normalization = 1/(std_dev * np.sqrt(2 * np.pi))

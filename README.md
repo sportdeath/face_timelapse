@@ -51,6 +51,6 @@ Then run:
 
 ### Convert to video
 
-Finally, convert the sequence of images to a video:
+Finally, convert the sequence of images to a video. Optionally, change the frame rate and quality settings in the [```img_to_vid.sh```](https://github.com/sportdeath/face_timelapse/blob/master/img_to_vid.sh) script. Then run:
 
     ./img_to_vid.sh MIXED_DIR OUTPUT_VIDEO.mp4
