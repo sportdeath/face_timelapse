@@ -20,16 +20,12 @@ The final script combines the mixed images into a ```.mp4``` file.
 ## Usage
 
 Put all of the images you want to make into a timelapse into a single folder.
-The order doesn't matter so long as they have timestamps embedded in their EXIF data.
-By default this script will only search for ```.jpg``` files, but that can be changed in the ```align.py``` script.
+The order doesn't matter but they must have timestamps embedded in their EXIF data.
+By default this script will only search for ```.jpg``` files, but that can be changed in the [```align.py```](https://github.com/sportdeath/face_timelapse/blob/master/align.py) script.
 
 Additionally, choose one representative photo that will define both the position of the face in the timelapse and the color normalization parameters.
 This master image does not necessarily need to be in your timelapse.
-
-Clone and ```cd``` into this library:
-
-    git clone https://github.com/sportdeath/face_timelapse
-    cd face_timelapse
+Additionally, note in your choice that the color normalization is done with respect to the *eyes* (since eyes don't change much over time).
 
 ### Align
 
@@ -42,7 +38,7 @@ This will probably take a while.
 ### Mix
 
 Create a directory for the mixed images.
-Optionally, modify the constants in the ```mix.py``` script.
+Optionally, modify the constants in the [```mix.py```](https://github.com/sportdeath/face_timelapse/blob/master/mix.py) script.
 All of these are measured in days:
 
 - ```FRAME_TIME```: The length of time represented by a single frame.
