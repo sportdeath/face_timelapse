@@ -8,10 +8,7 @@ import numpy as np
 from PIL import Image
 from PIL.ExifTags import TAGS
 import face_alignment
-
-INPUT_DIR  = "src"
-OUTPUT_DIR = "dst"
-MASTER = "master.jpg"
+import sys
 
 fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, device='cpu')
 
@@ -79,12 +76,19 @@ def color_correct(img, eyes, master_avg, master_dev):
     return np.clip(img, 0, 255)
 
 if __name__ == "__main__":
+    # Parse the arguments
+    if len(sys.argv) != 4:
+        print(f"usage: {sys.argv[0]} MASTER_IMG INPUT_DIR ALIGNED_DIR")
+        sys.exit()
+    MASTER = sys.argv[1]
+    INPUT_DIR  = sys.argv[2]
+    ALIGNED_DIR = sys.argv[3]
+
     # Open the master
     master_dat = Image.open(MASTER)
     master = np.array(master_dat)
 
     # Extract facial landmarks and transform
-    master = np.rot90(master, -1)
     master_face = extract_face(master)
     master_trans = master_align(master, master_face)
 
@@ -96,7 +100,8 @@ if __name__ == "__main__":
     print("Preprocessed master image")
 
     # Open all the files
-    for f in os.listdir(INPUT_DIR):
+    files = os.listdir(INPUT_DIR)
+    for f_index, f in enumerate(files):
         if f.endswith(".jpg"):
             # Open the image
             fn = os.path.join(INPUT_DIR, f)
@@ -104,6 +109,7 @@ if __name__ == "__main__":
             img = np.array(img_dat)
 
             # Rotate?
+            # TODO: fix this
             img = np.rot90(img, -1)
 
             # Extract facial landmarks
@@ -129,7 +135,7 @@ if __name__ == "__main__":
                     t = 0
 
                 img_dat = Image.fromarray(img)
-                fn = os.path.join(OUTPUT_DIR, str(t) + ".jpg")
+                fn = os.path.join(ALIGNED_DIR, str(t) + ".jpg")
                 img_dat.save(fn)
 
-                print("Processed image from time", t)
+                print(f"Processed image {f_index+1}/{len(files)} with timestamp {t}")

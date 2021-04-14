@@ -1,5 +1,7 @@
-src*
-dst*
 *.png
 *.jpg
 *.gif
+*.mp4
+aligned*
+mixed*
+src*

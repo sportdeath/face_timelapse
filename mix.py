@@ -3,23 +3,29 @@
 import os
 import numpy as np
 from PIL import Image
+import sys
 
-MIX_TIME = 3 # days
-FRAME_TIME = 2. # days
+"""
+Mixing parameters
+"""
+FRAME_TIME  =  1. # days
+MIX_TIME    =  3. # days
 OFFSET_TIME = 90. # days
-EPSILON = 0.0001
-INPUT_DIR = "dst"
-OUTPUT_DIR = "mixed"
-IMAGE_WIDTH = 960
-IMAGE_HEIGHT = 1280
 
 def gaussian_pdf(x, mean, std_dev):
     normalization = 1/(std_dev * np.sqrt(2 * np.pi))
     x_ = (x - mean)/std_dev
     return normalization * np.exp(-0.5 * x_ * x_)
 
+# Parse the arguments
+if len(sys.argv) != 3:
+    print(f"usage: {sys.argv[0]} ALIGNED_DIR MIXED_DIR")
+    sys.exit()
+ALIGNED_DIR  = sys.argv[1]
+MIXED_DIR = sys.argv[2]
+
 # Get a list of all the image times
-files = os.listdir(INPUT_DIR)
+files = os.listdir(ALIGNED_DIR)
 files = [f for f in files if f.endswith(".jpg")]
 files.sort()
 times = [int(x[:-4]) for x in files]
@@ -37,26 +43,30 @@ for i, t in enumerate(times):
 # Sample time at a constant rate
 frames = np.arange(times[0] - OFFSET_TIME, times[-1] + OFFSET_TIME, FRAME_TIME)
 
+# Fetch the height and width
+f0 = os.path.join(ALIGNED_DIR, files[0])
+width, height = Image.open(f0).size
+
 for i, t in enumerate(frames):
     # Calculate the relative weight of every picture in the frame
     probs = weights * gaussian_pdf(times, t, MIX_TIME)
     # Get rid of ones with negligible effect
     # so this doesn't take forever
     probs = probs/np.sum(probs)
-    probs[probs < EPSILON] = 0
+    probs[probs < 0.0001] = 0
     probs = probs/np.sum(probs)
 
-    # Open and mix all the in the frame
-    out = np.zeros((IMAGE_HEIGHT, IMAGE_WIDTH, 3))
+    # Open and mix all the images in the frame
+    out = np.zeros((height, width, 3))
     for j, p in enumerate(probs):
         if p > 0:
             # Open the image
-            f = os.path.join(INPUT_DIR, files[j])
+            f = os.path.join(ALIGNED_DIR, files[j])
             img = np.array(Image.open(f)).astype("float32")
             out += p * img
 
     # Write the output
     img = Image.fromarray(out.astype("uint8"))
-    fn = os.path.join(OUTPUT_DIR, str(i).zfill(5) + ".jpg")
+    fn = os.path.join(MIXED_DIR, str(i).zfill(8) + ".jpg")
     img.save(fn)
     print("processed", fn)
