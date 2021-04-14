@@ -1,6 +1,8 @@
 # Face Timelapse
 
-This is a series of scripts designed to turn images of a face that have been casually-captured across time into a visually pleasing timelapse. For example:
+This is a series of scripts designed to turn photos of a face that have been casually-captured across time into a visually pleasing timelapse.
+This works even if the photos have be shot at multiple locations on an inconsistent schedule with a smart phone.
+For example:
 
 *INSERT GIF HERE*
 
@@ -54,3 +56,48 @@ Then run:
 Finally, convert the sequence of images to a video. Optionally, change the frame rate and quality settings in the [```img_to_vid.sh```](https://github.com/sportdeath/face_timelapse/blob/master/img_to_vid.sh) script. Then run:
 
     ./img_to_vid.sh MIXED_DIR OUTPUT_VIDEO.mp4
+
+## Photo Tips
+
+These scripts are intended to make face timelapse creation a more casual process,
+but just a little attentiveness to how the photos are captured can have a big impact on quality.
+
+### Lighting
+
+The align script can correct for variations in light color but not light angle.
+Shadowing from different lighting angles can cause flickering and distort one's sense of shape.
+For best results, take photos that are consistently lit from the same angle.
+
+For example, take photos lit by the lights adorning a vanity mirror.
+These lights can be found in most dwellings and have a consistent placement.
+They're also easy to center yourself in front of.
+
+In addition, taking photos at night gives you better control over ambient light.
+
+Of course, if someone were to incorporate some fancy machine learning techniques
+(*e.g.*, [1](https://zhhoper.github.io/dpr.html),
+[2](https://ceciliavision.github.io/project-pages/portrait))
+this advice would be irrelivant.
+
+### Pose and Expression
+
+The align script performs 2D corrections for faces that are off-center, tilted or scaled,
+but it can't do 3D corrections, like turning your head to face the camera.
+So keep the pose of your head consistent.
+
+This includes being concious of the rotation of your chin --- you don't want your chin and forehead to grow and shrink over time.
+The easiest way to maintain a consisten chin-rotation is to look forward and keep the camera at eye level (unlike your typical selfie pose where the camera is held above the head).
+
+Also keep the camera at a consistent distance away (*e.g.* arms length) to avoid inconsistent [extension distortion](https://en.wikipedia.org/wiki/Selfie#Facial_distortion_effect).
+
+Finally, try to maintain a consistent expression.
+This doesn't necessarily mean a creepy deadpan; a slight smile works too.
+
+Again, these tips would be irrelivant if someone were to incorporate some machine learning black magic.
+
+### Scheduling
+
+The mixing script produces a photostream that is timed according to the photo timestamps rather then their numeracy.
+Therefore, there is no need to take exactly one photo a day!
+Taking bursts of photos or skipping days both work fine.
+In fact, oversampling can help smooth over pose or lighting inconsistencies.
