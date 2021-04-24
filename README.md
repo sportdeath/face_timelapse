@@ -50,6 +50,7 @@ All of these constants are measured in days:
 
 - ```FRAME_TIME```: The length of time represented by a single output frame.
 - ```MIX_TIME```: The standard deviation of the temporal blurring window (reduces flickering and jumping).
+- ```MAX_DIFF_TIME```: The maximum time difference allowed between consecutive photos. Any larger temporal gaps will be clipped to this minimum time to avoid jumping.
 - ```OFFSET_TIME```: The additional length of time that the first and last frames of the timelapse are held.
 
 Then run:

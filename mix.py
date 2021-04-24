@@ -6,9 +6,10 @@ from PIL import Image
 import sys
 
 # Mixing parameters
-FRAME_TIME  =   0.25  # days
-MIX_TIME    =   3.   # days
-OFFSET_TIME =  50.   # days
+FRAME_TIME    =   0.25 # days
+MIX_TIME      =   3.   # days
+MAX_DIFF_TIME =   2.   # days
+OFFSET_TIME   =  50.   # days
 
 def gaussian_pdf(x, mean, std_dev):
     normalization = 1/(std_dev * np.sqrt(2 * np.pi))
@@ -32,6 +33,12 @@ times = [int(x[:-4]) for x in files]
 times = np.array(times)
 times -= times[0]
 times = times/86400.
+
+# Clip the difference between times
+diff = np.diff(times)
+diff[diff > MAX_DIFF_TIME] = MAX_DIFF_TIME
+times = np.cumsum(diff)
+times = np.insert(times, 0, 0)
 
 # Calculate a weight for each time
 weights = np.empty(times.shape)
